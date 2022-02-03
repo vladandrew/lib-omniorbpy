@@ -1,0 +1,97 @@
+#  SPDX-License-Identifier: BSD-3-Clause
+#
+#  omniORBpy glue Makefile.uk
+#
+#  Authors: Vlad-Andrei Badoiu <vlad_andrei.badoiu@upb.ro>
+#
+#  Copyright (c) 2021, University Politehnica of Bucharest. All rights reserved.
+#
+#  Redistribution and use in source and binary forms, with or without
+#  modification, are permitted provided that the following conditions
+#  are met:
+#
+#  1. Redistributions of source code must retain the above copyright
+#     notice, this list of conditions and the following disclaimer.
+#  2. Redistributions in binary form must reproduce the above copyright
+#     notice, this list of conditions and the following disclaimer in the
+#     documentation and/or other materials provided with the distribution.
+#  3. Neither the name of the copyright holder nor the names of its
+#     contributors may be used to endorse or promote products derived from
+#     this software without specific prior written permission.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+#  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+#  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+#  ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+#  LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+#  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+#  SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+#  INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+#  CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+#  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+#  POSSIBILITY OF SUCH DAMAGE.
+#
+
+################################################################################
+# Library registration
+################################################################################
+$(eval $(call addlib_s,libomniorbpy,$(CONFIG_LIBOMNIORBPY)))
+
+################################################################################
+# Original sources
+################################################################################
+LIBOMNIORBPY_URL=https://sourceforge.net/projects/omniorb/files/omniORBpy/omniORBpy-4.2.4/omniORBpy-4.2.4.tar.bz2
+$(eval $(call fetch,libomniorbpy,$(LIBOMNIORBPY_URL)))
+
+################################################################################
+# Helpers
+################################################################################
+LIBOMNIORBPY_EXTRACTED = $(LIBOMNIORBPY_ORIGIN)/omniORBpy-4.2.4
+
+################################################################################
+# Library includes
+################################################################################
+LIBOMNIORBPY_GLOBAL_INCLUDES-y     += -I$(LIBOMNIORBPY_BASE)/include
+LIBOMNIORBPY_GLOBAL_INCLUDES-y     += -I$(LIBOMNIORBPY_EXTRACTED)/include
+LIBOMNIORBPY_GLOBAL_INCLUDES-y     += -I$(LIBOMNIORBPY_EXTRACTED)/modules
+CINCLUDES-$(CONFIG_LIBOMNIORBPY)   += $(LIBOMNIORBPY_GLOBAL_INCLUDES-y)
+CXXINCLUDES-$(CONFIG_LIBOMNIORBPY) += $(LIBOMNIORBPY_GLOBAL_INCLUDES-y)
+
+PYINCFILE := "<Python.h>"
+PYINCTHRD := "<pythread.h>"
+
+LIBOMNIORBPY_CFLAGS-y += -DPYTHON_INCLUDE=$(PYINCFILE) -DPYTHON_THREAD_INC=$(PYINCTHRD) -D__OSVERSION__=2 -DOMNIPY_MAJOR=4 -DOMNIPY_MINOR=2 -DOMNIPY_VERSION_STRING='"4.2.4"'
+LIBOMNIORBPY_CXXFLAGS-y += -DPYTHON_INCLUDE=$(PYINCFILE) -DPYTHON_THREAD_INC=$(PYINCTHRD) -D__OSVERSION__=2 -DOMNIPY_MAJOR=4 -DOMNIPY_MINOR=2 -DOMNIPY_VERSION_STRING='"4.2.4"'
+
+
+################################################################################
+# Global flags
+################################################################################
+
+#LIBOMNIORBPY_SRCS-y += $(LIBOMNIORBPY_EXTRACTED)/src/lib/omniORB/orbcore/policy.cc
+
+LIBOMNIORBPY_SRCS-y += $(LIBOMNIORBPY_EXTRACTED)/modules/pyCallDescriptor.cc
+LIBOMNIORBPY_SRCS-y += $(LIBOMNIORBPY_EXTRACTED)/modules/pyInterceptors.cc
+LIBOMNIORBPY_SRCS-y += $(LIBOMNIORBPY_EXTRACTED)/modules/pyObjectRef.cc
+LIBOMNIORBPY_SRCS-y += $(LIBOMNIORBPY_EXTRACTED)/modules/pyMarshal.cc
+LIBOMNIORBPY_SRCS-y += $(LIBOMNIORBPY_EXTRACTED)/modules/pyAbstractIntf.cc
+LIBOMNIORBPY_SRCS-y += $(LIBOMNIORBPY_EXTRACTED)/modules/omnipy.cc
+LIBOMNIORBPY_SRCS-y += $(LIBOMNIORBPY_EXTRACTED)/modules/pyomniFunc.cc
+LIBOMNIORBPY_SRCS-y += $(LIBOMNIORBPY_EXTRACTED)/modules/pyPOAManagerFunc.cc
+LIBOMNIORBPY_SRCS-y += $(LIBOMNIORBPY_EXTRACTED)/modules/pyContext.cc
+LIBOMNIORBPY_SRCS-y += $(LIBOMNIORBPY_EXTRACTED)/modules/pyThreadCache.cc
+LIBOMNIORBPY_SRCS-y += $(LIBOMNIORBPY_EXTRACTED)/modules/cxxAPI.cc
+LIBOMNIORBPY_SRCS-y += $(LIBOMNIORBPY_EXTRACTED)/modules/pyPOAFunc.cc
+LIBOMNIORBPY_SRCS-y += $(LIBOMNIORBPY_EXTRACTED)/modules/pyValueType.cc
+LIBOMNIORBPY_SRCS-y += $(LIBOMNIORBPY_EXTRACTED)/modules/pyLocalObjects.cc
+LIBOMNIORBPY_SRCS-y += $(LIBOMNIORBPY_EXTRACTED)/modules/pyFixed.cc
+LIBOMNIORBPY_SRCS-y += $(LIBOMNIORBPY_EXTRACTED)/modules/ziop/pyZIOP.cc
+LIBOMNIORBPY_SRCS-y += $(LIBOMNIORBPY_EXTRACTED)/modules/connections/pyConnectionMgmt.cc
+LIBOMNIORBPY_SRCS-y += $(LIBOMNIORBPY_EXTRACTED)/modules/pyExceptions.cc
+#LIBOMNIORBPY_SRCS-y += $(LIBOMNIORBPY_EXTRACTED)/modules/sslTP/pysslTP.cc
+LIBOMNIORBPY_SRCS-y += $(LIBOMNIORBPY_EXTRACTED)/modules/pyPOACurrentFunc.cc
+LIBOMNIORBPY_SRCS-y += $(LIBOMNIORBPY_EXTRACTED)/modules/pyORBFunc.cc
+LIBOMNIORBPY_SRCS-y += $(LIBOMNIORBPY_EXTRACTED)/modules/pyTypeCode.cc
+LIBOMNIORBPY_SRCS-y += $(LIBOMNIORBPY_EXTRACTED)/modules/codesets/pyCodeSets.cc
+LIBOMNIORBPY_SRCS-y += $(LIBOMNIORBPY_EXTRACTED)/modules/pyServant.cc
+
