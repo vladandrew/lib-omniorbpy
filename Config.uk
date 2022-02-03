@@ -1,0 +1,12 @@
+menuconfig LIBOMNIORBPY
+	bool "OmniORB python"
+	default n
+	depends on ARCH_X86_64
+	select LIBCXX
+	select LIBLWIP
+	select LIBPTHREAD_EMBEDDED
+	select LIBOPENSSL
+	select LIBC
+	select LIBOMNIORB
+	select LIBPYTHON3
+
